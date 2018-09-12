@@ -92,29 +92,7 @@ var app={
 		
 	}
 };
-app.session = {
-		context : x=>{
-			sessionStorage.setItem('context',x);
-			sessionStorage.setItem('js',x+'/resources/js');
-			sessionStorage.setItem('css',x+'/resources/css');
-			sessionStorage.setItem('img',x+'/resources/img');
-		}, 
-		path : x=>{
-			return sessionStorage.getItem(x);
-		}	
-};
-app.x =()=>{
-	return app.session.path('context');
-};
-app.j =()=>{
-	return app.session.path('js');
-};
-app.c =()=>{
-	return app.session.path('css');
-};
-app.i =()=>{
-	return app.session.path('img');
-};
+
 
 user.session = x=>{
 	$.each(x, (k,v)=>{

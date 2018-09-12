@@ -7,19 +7,19 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.gms.web.cmm.Calc;
 import com.gms.web.cmm.Util;
 
-@Controller
+@RestController
 @RequestMapping("/member")
-@SessionAttributes("user")
 public class MemberCtrl {
 	static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	@Autowired MemberService memberService; 
@@ -67,7 +67,8 @@ public class MemberCtrl {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST )
+
+	@PostMapping(value="/login")
 	public String login(@ModelAttribute("member") Member mem, Model model) {
 		logger.info("MemberController ::: login(){}");
 		String judge="";
@@ -84,13 +85,13 @@ public class MemberCtrl {
 		System.out.println("넘겨줄 ID값 ::"+member.getUserid());
 		return page;
 	}
-	@RequestMapping("/logout")
+/*	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		logger.info("MemberController ::: logout(){}");
 		//session 지우는 방법 2
 		session.setAttribute("user", null);
 		return "public:common/content.tiles";
-	}
+	}*/
 	@RequestMapping("/fileupload")
 	public void fileupload() {}
 }
