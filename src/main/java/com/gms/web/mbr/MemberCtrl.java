@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.gms.web.cmm.Calc;
+import com.gms.web.cmm.Util;
 
 @Controller
 @RequestMapping("/member")
 @SessionAttributes("user")
 public class MemberCtrl {
 	static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
-	@Autowired MemberService memberService;
+	@Autowired MemberService memberService; 
 	@Autowired Member member;
 	@Autowired Calc calc;
 	//추가
@@ -67,10 +68,21 @@ public class MemberCtrl {
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST )
-	public String login(@ModelAttribute("member") Member member, Model model) {
+	public String login(@ModelAttribute("member") Member mem, Model model) {
 		logger.info("MemberController ::: login(){}");
-		Function<Member, String> f = (t)->{return mbrmapper.login(t);};
-		return f.apply(member).equals("1")?"private:member/retrieve.tiles":"redirect:/move/member/login/off";
+		String judge="";
+		String page="";
+		
+		if(Util.notNull.test(mbrmapper.exist(mem.getUserid()))) {
+			Function<Member, String> f = (t)->{return mbrmapper.login(t);};
+			page = f.apply(mem).equals("1")?"private:member/retrieve.tiles":"redirect:/move/member/login/off";
+			judge = f.apply(mem).equals("1")?"success":"failed";
+		}
+		if(Predicate.isEqual("success").test(judge)) {
+			member = mbrmapper.selectOne(mem.getUserid());
+		}
+		System.out.println("넘겨줄 ID값 ::"+member.getUserid());
+		return page;
 	}
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {

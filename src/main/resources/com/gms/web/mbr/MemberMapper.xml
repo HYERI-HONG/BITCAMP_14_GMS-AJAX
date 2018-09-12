@@ -6,7 +6,7 @@
 <mapper namespace="com.gms.web.mbr.MemberMapper">
   <select id="selectOne" resultType="com.gms.web.mbr.Member">
     SELECT * FROM MEMBER 
-    WHERE USERID LIKE #{p}
+    WHERE USERID LIKE #{userid}
   </select>
   <insert id="insert">
   	INSERT INTO MEMBER(USERID,SSN,NAME,ROLL,TEAMID,PASSWORD,AGE,GENDER)
