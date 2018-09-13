@@ -26,22 +26,55 @@ algo.main ={
 					+'<td id="t__r" style="width:50%; border:1px solid black;"></td>'
 					+'</tr></table></div>');
 			
-			$('#t__l').html('<a id="arith__seq"><h3>등차수열</h3></a><br>');
-			$('#arith__seq').click(e=>{
-				
-				
-				let qes ='<h4>'
+	/*		$('#t__l').html('<a id="arith__seq"><h3>등차수열</h3></a><br>');
+			$('#t__l').append('<a id="fibo__seq"><h3>피보나치수열</h3></a><br>');
+			$('#t__l').append('<a id="swit__seq"><h3>스위치</h3></a><br>');
+			$('#t__l').append('<a id="fac__seq"><h3>팩토리</h3></a><br>');*/
+			
+			let $t__l=$('#t__l');   //$t__l이 객체가 된다.
+			let $t__r=$('#t__r'); 
+			
+			$('<ul/>')
+			.attr({id : 'side__menu'})
+			.addClass('list-group').appendTo($t__l);
+			$('<li/>')
+			.attr({id : 'arith'})
+			.addClass('list-group-item')
+			.appendTo($('#side__menu'));
+			
+			
+			
+			//---------------------------등차수열---------------------------//
+			$("<a/>")
+			.attr({href:'#'})
+			.html('등차수열')
+			.appendTo($('#arith'))
+			.click(e=>{
+				$t__r.empty();
+				/*let qes ='<div id ="ques"><h4>'
 					+ '초항 A부터 N번째 숫자 까지, 공차 D인 수열의 합을 구하는 알고리즘'
 					+ '</h4><br>'
 					+ '<label >A : </label><input id="a" type="text" value=""><br>'
 					+ '<label >D : </label><input id="d" type="text" value=""><br>'
 					+ '<label >N : </label><input id="k" type="text" value=""><br>'
-					+ '<button id="bt">결과 보기</button>'
-					+ '<h6 id="rs"></h6>';
-				$('#t__r').html(qes);
-				
-		
-				$('#bt').click(e=>{	
+					+ '<button id="bt">결과 보기</button></div>'
+					+ '<h6 id="rs"></h6>';*/
+				$('<div/>').attr({id:'ques'}).appendTo($t__r);
+				$('<h4/>')
+		       	.html('초항 A부터 N번째 숫자 까지, 공차 D인 수열의 합을 구하는 알고리즘').appendTo($('#ques'));
+				$('<label>').html('A  :  ').appendTo($('#ques'));
+				$('<input>').attr({id : 'a', type : 'text'}).appendTo($('#ques'));
+				$('<br/>').appendTo($('#ques'));
+				$('<label>').html('D  :  ').appendTo($('#ques'));
+				$('<input>').attr({id : 'd', type : 'text'}).appendTo($('#ques'));
+				$('<br/>').appendTo($('#ques'));
+				$('<label>').html('N  :  ').appendTo($('#ques'));
+				$('<input>').attr({id : 'k', type : 'text'}).appendTo($('#ques'));
+				$('<br/>').appendTo($('#ques'));
+				$('<button/>').addClass('btn btn-primary').attr({type :'button'}).html('결과보기').appendTo('#ques').click(e=>{	
+					$('<br/>').appendTo($('#ques'));
+					$('<h6/>').attr({id : 'rs'}).appendTo($('#ques'));
+					
 					if($.fn.nullChecker(
 							[$('#a').val(),
 								$('#d').val(),
@@ -63,10 +96,11 @@ algo.main ={
 						}
 						$('#rs').empty().text('답 : '+s);	
 					}	
-				})
+				});
 						
 			});
-			$('#t__l').append('<a id="fibo__seq"><h3>피보나치수열</h3></a><br>');
+			
+			//---------------------------피보나치수열---------------------------//
 			$('#fibo__seq').click(e=>{
 				let qes ='<h4>'
 					+ '피보나치 수열에 대하여 S번째 부터 N번째 항까지의 합을 구하는 알고리즘'
@@ -106,7 +140,8 @@ algo.main ={
 				})
 			});
 			
-			$('#t__l').append('<a id="swit__seq"><h3>스위치</h3></a><br>');
+			//---------------------------스위치수열---------------------------//
+			
 			$('#swit__seq').click(e=>{
 				let qes ='<h4>'
 					+ '시작값 S부터 끝값 E까지 부호를 교차하여 합을 구하는 알고리즘'
@@ -143,7 +178,8 @@ algo.main ={
 				})
 			});
 			
-			$('#t__l').append('<a id="fac__seq"><h3>팩토리</h3></a><br>')
+			
+			//---------------------------팩토리수열---------------------------//
 			$('#fac__seq').click(e=>{
 				let qes ='<h4>'
 					+ '시작값 S부터 끝값 E까지 누승(factorial)의 합을 구하는 알고리즘'
