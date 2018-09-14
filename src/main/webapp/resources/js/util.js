@@ -24,5 +24,6 @@ $.prototype.zeroChecker=x=>{
 
 
 
+
 				
 		
