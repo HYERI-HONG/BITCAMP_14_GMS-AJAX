@@ -13,6 +13,7 @@ var algo={
 			$('#wrapper').empty();
 		}
 };
+
 algo.main ={
 		onCreate:()=>{
 			algo.main.setContentView();
@@ -30,10 +31,8 @@ algo.main ={
 			$('#t__l').append('<a id="fibo__seq"><h3>피보나치수열</h3></a><br>');
 			$('#t__l').append('<a id="swit__seq"><h3>스위치</h3></a><br>');
 			$('#t__l').append('<a id="fac__seq"><h3>팩토리</h3></a><br>');*/
-			alert('step 5.5');
 			let $t__l=$('#t__l');   //$t__l이 객체가 된다.
 			let $t__r=$('#t__r'); 
-			alert('step 6');
 			$('<ul/>')
 			.attr({id : 'side__menu'})
 			.addClass('list-group').appendTo($t__l);
@@ -45,10 +44,9 @@ algo.main ={
 			
 			
 			//---------------------------등차수열---------------------------//
-			$("<a/>")
-			.attr({href:'#'})
-			.html('등차수열')
-			.appendTo($('#arith'))
+			
+			let anchor = $.fn.anchor({txt : '등차수열의 합'});
+			anchor.appendTo($('#arith'))
 			.click(e=>{
 				$t__r.empty();
 				

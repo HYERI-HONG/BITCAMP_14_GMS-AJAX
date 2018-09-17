@@ -20,6 +20,14 @@ $.prototype.zeroChecker=x=>{
 	}
 	return flag;
 }
+$.prototype.anchor=x=>{
+	return $("<a/>")
+	.attr({href:'#'})
+	.html(x.txt);
+
+}
+
+
 
 
 
