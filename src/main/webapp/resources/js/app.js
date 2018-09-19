@@ -1,4 +1,181 @@
 "use strict";
+var app = app || {};
+
+app =(()=>{
+	var init =x=>{
+		console.log('step1 : app.init 진입');
+		app.router.init(x);
+	};
+	return {init : init};
+})();
+
+app.main =(()=>{
+	var w, header, footer, content, ctx, script, style, img;
+	var init =()=>{
+		console.log('step5 : app.main.init ::  진입');
+		ctx = $.ctx();
+		script = $.script();
+		style = $.style();
+		img = $.img();
+		w=$('#wrapper');
+		onCreate();
+	};
+	var onCreate =()=>{
+		setContentView();
+	};
+	var setContentView =()=>{
+		console.log('app.main.setContentView 진입');
+		app.router.home({header:'header'});
+	};
+	return {init : init};
+})();
+//회원가입
+app.join = (()=>{
+	var add =()=>{
+		alert('회원가입 진입');
+		$('#content').empty();
+		$.getScript($.script()+'/add.js',()=>{
+			$('#content').html(addUI());
+			$('#add_submit').click(e=>{
+				e.preventDefault();
+				$.ajax({
+					url : $.ctx()+'/member/add',
+					method : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify({
+						userid : $('#userid').val(),
+						password : $('#password').val(),
+						name : $('#name').val(),
+						ssn : $('#ssn').val(),
+						//teamid : $('#teamid').val(), 불가능
+						//teamid : $('input[name=teamid]:checked').val(), 가능
+						teamid : $('.teamid:checked').val(),
+						roll : $('#roll').val()
+					}),
+					success : d=>{
+						
+					},
+					error : (m1,m2,m3)=>{
+						alert("error발생");
+					}
+				});
+			});
+		});
+	};
+	return {add : add};
+	
+})();
+//로그인
+app.permission = (()=>{
+	var login =()=>{
+		alert('로그인 진입');
+	/*	$('#footer').remove();*/
+		$('#content').empty();
+		$.getScript($.script()+'/login.js'
+		,()=>{
+			$('#content').html(loginUI());
+			$('#login_submit').click(e=>{
+				e.preventDefault();
+				
+				$.ajax({
+					url : $.ctx()+'/member/login',
+					method : 'POST',
+					contentType : 'application/json',
+					data: JSON.stringify({
+						userid:$('#userid').val(),
+						password:$('#password').val()
+						}),
+					success : d=>{
+						//$('<h6/>').attr({id : 'rs',color:'red'}).appendTo($('#login_submit'));
+						if(d.idValid=='WRONG'){
+							$('#rs').html('일치하는 ID값이 없습니다.');
+						}else if(d.pwValid=='WRONG'){
+							$('#rs').text('비밀번호를 잘못 입력했습니다.');
+						}else{
+							app.router.home({header:'auth'});
+						}
+					},
+					error : (m1,m2,m3)=>{
+						alert('에러발생');
+					}
+				});
+			})
+		});
+	};
+	return{login:login};
+})();
+
+app.board =(()=>{
+	var w, header, footer, content, ctx, script, style, img;
+	var init =()=>{
+		console.log('step5 : app.board.init ::  진입');
+		ctx = $.ctx();
+		script = $.script();
+		style = $.style();
+		img = $.img();
+		w=$('#wrapper');
+		onCreate();
+	};
+	var onCreate =()=>{
+		setContentView();
+	};
+	var setContentView =()=>{
+		alert('게시판');
+		$('#footer').remove();
+		$('#content').empty();
+	};
+	return{init:init}; 
+})();
+
+app.router = {
+		init : x=>{
+			console.log('step2 : app.router.init 진입');
+			$.getScript(x+'/resources/js/router.js',
+				()=>{
+					console.log('step3 : app.router.init ::  getScript');
+						$.extend(new Session(x)); // 확장
+						$.getScript(x+'/resources/js/util.js')
+						.done(()=>{console.log('step4 : app.router.init :: 성공');})
+						.fail(()=>{console.log('step4 : app.router.init :: 실패');});
+						app.main.init();
+					}
+				); // 외부의 js파일 호출, import 느낌
+		},
+		home : x=>{
+			$.when(
+					$.getScript($.script()+'/'+x.header+'.js'),
+					$.getScript($.script()+'/content.js'),
+					$.getScript($.script()+'/footer.js'),
+					$.Deferred(y=>{
+						$(y.resolve);
+					})
+				).done(x=>{
+						$('#wrapper').html(headerUI()
+								+contentUI()
+								+footerUI()
+						);
+						$('#login_btn').click(e=>{
+							e.preventDefault();
+							app.permission.login();
+						});
+						$('#add_btn').click(e=>{
+							e.preventDefault();
+							app.join.add();
+						});
+						$('#board_btn').click(e=>{
+							app.board.init();
+						});
+						$('#logout_btn').click(e=>{
+							e.preventDefault();
+							app.router.home({header:'header'});
+						});
+						console.log(' when done 로드성공');
+				})
+				.fail(x=>{console.log(' when fail 로드실패');})
+		}
+};
+
+/*"use strict";
 var app = app || {}
 var user = user || {}
 var app={
@@ -38,10 +215,10 @@ var app={
 			location.href = app.x()+'/move/member/add/off';
 		});
 		$('#add_submit').click(()=>{
-			/*var form = document.getElementById('joinForm');
+			var form = document.getElementById('joinForm');
 			form.action = app.x()+"/member/add";
 			form.method = "POST";
-			form.submit();	*/
+			form.submit();	
 			$('#addForm')
 			.attr({
 				action:app.x()+"/member/add",
@@ -108,7 +285,7 @@ user.getItem=()=>{
 user.modify=()=>{
 	let a = user.getItem().userid;
 	$('#modifyuserid').text(a);
-}
+}*/
 
 
 

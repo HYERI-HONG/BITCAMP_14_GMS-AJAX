@@ -4,33 +4,37 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.gms.web.mbr.MemberMapper">
-  <select id="selectOne" resultType="com.gms.web.mbr.Member">
-    SELECT * FROM MEMBER 
-    WHERE USERID LIKE #{userid}
+  <select id="get" resultType="com.gms.web.mbr.Member">
+    SELECT TEAMID,USERID,PASSWORD,NAME,AGE,SSN,GENDER,ROLL FROM MEMBER 
+    <where>
+    	<if test=" userid !=null and userid !='' ">
+    	USERID LIKE #{userid}
+    	</if>
+    	<if test=" password !=null and password !='' ">
+    	AND PASSWORD LIKE #{password}
+    	</if>
+    </where>
   </select>
-  <insert id="insert">
+ <select id="count" resultType="int">
+	 SELECT COUNT(*) FROM MEMBER
+	 <where>
+ 		 <if test="userid !=null and userid !=''">USERID LIKE #{userid}</if>
+ 	</where>
+ </select>
+  <insert id="post">
   	INSERT INTO MEMBER(USERID,SSN,NAME,ROLL,TEAMID,PASSWORD,AGE,GENDER)
 	VALUES(#{userid},#{ssn},#{name},#{roll},#{teamid},#{password},#{age},#{gender})
   </insert>
-	<select id="login" resultType="string">
-	SELECT COUNT(USERID) FROM MEMBER
-	WHERE USERID LIKE #{userid}
-	AND PASSWORD LIKE #{password}
-	</select>
-	<select id="exist" resultType="string">
-	SELECT USERID FROM MEMBER
-	WHERE USERID LIKE #{userid}
-	</select>
-	<update id="update">
+<update id="put">
 	UPDATE MEMBER SET 
 	PASSWORD = #{password},
 	ROLL = #{roll},
 	TEAMID = #{teamid}
 	WHERE USERID LIKE #{userid}
-	</update>
-	<delete id="delete">
+</update>
+<delete id="delete">
 	DELETE FROM MEMBER 
 	WHERE USERID LIKE #{userid} 
 	AND PASSWORD LIKE #{password}
-	</delete>
+</delete>
 </mapper>

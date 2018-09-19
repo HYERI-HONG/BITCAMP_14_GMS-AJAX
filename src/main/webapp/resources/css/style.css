@@ -1,13 +1,13 @@
 
 div#content{
 	padding: 15px 30px 15px 30px;
-	background-color: #005580;
+	background-color: white;
 	/* background-image : url('../img/home/main.jpg'); */
 	margin-bottom: 30px;
 	min-height: 400px;
 }
 div#login_content{
-	border : 1px solid white;
+	border : 1px solid black;
 	margin : 160px 60px;
 	text-align : center;
 }
