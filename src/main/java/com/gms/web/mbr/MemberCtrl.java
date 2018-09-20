@@ -58,14 +58,14 @@ public class MemberCtrl {
 		return map;
 	}
 	@PostMapping(value="/add")
-	public @ResponseBody Map<String,Object> add(@RequestBody Map<String, Object> param) {
+	public @ResponseBody Map<String,Object> add(@RequestBody Member param) {
 		logger.info("======== MemberController ::: add() =======");
+		Util.Log.accept("roll:"+param.getRoll());
 		Map<String, Object> map = new HashMap<>();
-
-		Member mem= new Member();
+		Util2.ageAndGender.apply(param);
 		
-/*		param.put("",Util2.ageAndGender(param));
-		param.put(calc.calcGender(member.getSsn()));*/
+		
+		
 		return map;
 	}
 	@RequestMapping("/list")

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class HomeController {
-	static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+public class HomeCtrl {
+	static final Logger logger = LoggerFactory.getLogger(HomeCtrl.class);
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model,HttpServletRequest request) {
 		model.addAttribute("ctx",Util.ctx.apply(request));

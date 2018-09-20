@@ -36,8 +36,17 @@ app.join = (()=>{
 		$('#content').empty();
 		$.getScript($.script()+'/add.js',()=>{
 			$('#content').html(addUI());
+			$("[name='subject']").change(function() {
+				alert($(this).val());
+			});
 			$('#add_submit').click(e=>{
 				e.preventDefault();
+				var sub ='';
+				for(let i of $("[name='roll']")){
+					if(i.checked){
+						sub+=i.value+'/';
+					}
+				}
 				$.ajax({
 					url : $.ctx()+'/member/add',
 					method : 'POST',
@@ -47,10 +56,9 @@ app.join = (()=>{
 						password : $('#password').val(),
 						name : $('#name').val(),
 						ssn : $('#ssn').val(),
-						//teamid : $('#teamid').val(), 불가능
-						//teamid : $('input[name=teamid]:checked').val(), 가능
 						teamid : $('.teamid:checked').val(),
-						roll : $('#roll').val()
+						//roll : $('#roll').val()
+						roll : JSON.stringify(arr)
 					}),
 					success : d=>{
 						
@@ -71,34 +79,42 @@ app.permission = (()=>{
 		alert('로그인 진입');
 	/*	$('#footer').remove();*/
 		$('#content').empty();
+		//$.getScript($.script()+'/compo.js');
 		$.getScript($.script()+'/login.js'
 		,()=>{
 			$('#content').html(loginUI());
+			$('<input/>').attr({id:'login_submit',type:'button',value:'로그인'}).appendTo($('#login_content'));
+			//ui.button({id:'login_submit',value:'로그인'}).css('background-color','blue').appendTo($('#login_content'));
+			
 			$('#login_submit').click(e=>{
 				e.preventDefault();
-				
-				$.ajax({
-					url : $.ctx()+'/member/login',
-					method : 'POST',
-					contentType : 'application/json',
-					data: JSON.stringify({
-						userid:$('#userid').val(),
-						password:$('#password').val()
-						}),
-					success : d=>{
-						//$('<h6/>').attr({id : 'rs',color:'red'}).appendTo($('#login_submit'));
-						if(d.idValid=='WRONG'){
-							$('#rs').html('일치하는 ID값이 없습니다.');
-						}else if(d.pwValid=='WRONG'){
-							$('#rs').text('비밀번호를 잘못 입력했습니다.');
-						}else{
-							app.router.home({header:'auth'});
+			
+				if($.fn.nullChecker([$('#userid').val(),$('#password').val()])){
+					$('#rs').html('필수입력값을 입력하세요.');
+				}else{
+					$.ajax({
+						url : $.ctx()+'/member/login',
+						method : 'POST',
+						contentType : 'application/json',
+						data: JSON.stringify({
+							userid:$('#userid').val(),
+							password:$('#password').val()
+							}),
+						success : d=>{
+							//$('<h6/>').attr({id : 'rs',color:'red'}).appendTo($('#login_submit'));
+							if(d.idValid==='WRONG'){
+								$('#rs').html('일치하는 아이디값이 없습니다.');
+							}else if(d.pwValid==='WRONG'){
+								$('#rs').html('비밀번호를 잘못 입력했습니다.');
+							}else{
+								app.router.home({header:'auth'});
+							}
+						},
+						error : (m1,m2,m3)=>{
+							alert('에러발생');
 						}
-					},
-					error : (m1,m2,m3)=>{
-						alert('에러발생');
-					}
-				});
+					});
+				}
 			})
 		});
 	};

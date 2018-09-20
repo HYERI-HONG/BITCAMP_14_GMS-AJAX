@@ -13,9 +13,8 @@ var ui={
 		}
 		return ul;
 	},
-	/*input : x=>{
-		return $('<input/>')
-		.attr(x).addClass('form-control');
+	/*button : x=>{
+		return $('<input/>').attr({id:x.id,type:'button',value:x.value});
 	},*/
 	input : x=>{
 		let p = ui.div({}).addClass("input-group mb-3");
