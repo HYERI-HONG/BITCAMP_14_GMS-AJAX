@@ -137,8 +137,34 @@ app.board =(()=>{
 	};
 	var setContentView =()=>{
 		alert('게시판');
-		$('#footer').remove();
+		
 		$('#content').empty();
+		
+		$.getJSON(ctx+'/boards/1',d=>{
+			$.getScript(script+'/compo.js',()=>{
+				ui.div({id:'listContent',style:'margin: 160px 60px'}).appendTo($('#content'));
+				let x={
+						type :"defualt",
+						id : "table",
+						head : "게시판",
+						body : "오픈게시판",
+						list : ['번호','제목','내용','글쓴이','작성일','조회수'],
+						clazz : 'table table-bordered'
+				};
+				(ui.table(x)).appendTo($('#listContent'));
+				$.each(d,(i,j)=>{
+					let tr = $('<tr/>');
+					$('<td/>').html(j.bno).appendTo(tr);
+					$('<td/>').html(j.title).appendTo(tr);
+					$('<td/>').html(j.content).appendTo(tr);
+					$('<td/>').html(j.writer).appendTo(tr);
+					$('<td/>').html(j.regdate).appendTo(tr);
+					$('<td/>').html(j.viewcnt).appendTo(tr);
+					tr.appendTo($('tbody'));
+				});
+			});
+			
+		});
 	};
 	return{init:init}; 
 })();

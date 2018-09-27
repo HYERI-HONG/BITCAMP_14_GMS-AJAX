@@ -24,7 +24,6 @@ import com.gms.web.cmm.Util2;
 public class MemberCtrl {
 	static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	@Autowired Member member;
-	@Autowired Calc calc;
 	@Autowired MemberMapper mbrmapper;
 	
 	@PostMapping(value="/login")

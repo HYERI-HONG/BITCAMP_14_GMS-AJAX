@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.gms.web.reply.ReplyMapper">
 
-	<select id="list" resultType="com.gms.web.reply.Reply">
+<!-- 	<select id="list" resultType="com.gms.web.reply.Reply">
 		select
 		*
 		from
@@ -51,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getBno" resultType="int">
 		select bno from tbl_reply where rno = #{rno}
-	</select>
+	</select> -->
 
 </mapper>
 

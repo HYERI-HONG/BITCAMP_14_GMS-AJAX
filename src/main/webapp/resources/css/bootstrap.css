@@ -248,9 +248,9 @@ svg:not(:root) {
   overflow: hidden;
 }
 
-table {
+/* table {
   border-collapse: collapse;
-}
+} */
 
 caption {
   padding-top: 0.75rem;

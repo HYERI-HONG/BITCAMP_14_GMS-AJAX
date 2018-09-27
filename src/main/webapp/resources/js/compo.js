@@ -13,9 +13,6 @@ var ui={
 		}
 		return ul;
 	},
-	/*button : x=>{
-		return $('<input/>').attr({id:x.id,type:'button',value:x.value});
-	},*/
 	input : x=>{
 		let p = ui.div({}).addClass("input-group mb-3");
 		(ui.div({id:'input-group-prepend'})
@@ -34,6 +31,40 @@ var ui={
 	},
 	label : x=>{
 		return $('<label/>').attr('for',x.id).text(x.txt);
+	},
+	
+/*	<div class="panel panel-default">
+	  <div class="panel-heading">Panel heading</div>
+	  <div class="panel-body"></div>
+	  <table class="table"></table>
+	</div>
+	
+	
+	
+	<div class="panel panel-default">
+  		<div class="panel-heading">Panel heading</div>
+  		<table class="table"></table>
+	</div>
+	*/
+	table : x=>{
+		let outdiv = $('<div/>').addClass('panel panel-'+x.type);
+		let indiv = $('<div/>').addClass('panel-heading').html(x.body);
+		let tbl = $('<table id="'+x.id+'"/>').addClass(x.clazz);
+		
+		outdiv.append(indiv);
+		
+		let tr = $('<tr/>');
+		let thead = $('<thead/>');
+		$.each(x.list,(i,j)=>{
+			$('<th/>').html(j).appendTo(tr);
+		});
+		tr.appendTo(thead);
+		thead.appendTo(tbl);
+		$('<tbody/>').appendTo(tbl);
+		
+		tbl.appendTo(outdiv);
+		
+		return tbl;
 	}
 	
 	
