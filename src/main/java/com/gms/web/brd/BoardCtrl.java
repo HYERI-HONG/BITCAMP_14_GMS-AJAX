@@ -26,9 +26,26 @@ public class BoardCtrl {
 		logger.info("BoardController ::: list(){}");
 		map.clear();
 		map.put("pageNo", Integer.parseInt(pageNo));
-		map.put("countAll",brdmapper.countAll());
+		map.put("count",brdmapper.countAll());
 		page.carryOut(map);
 		map.put("list", brdmapper.listAll(page));	
+		map.put("page", page);
+		return map;
+		
+	}
+	@RequestMapping("/boards/{id}/{pageNo}")
+	public @ResponseBody Map<String,Object> mylist(@PathVariable String id,@PathVariable String pageNo){
+		logger.info("BoardController ::: mylist(){}");
+		
+		map.clear();
+		map.put("pageNo", Integer.parseInt(pageNo));
+		map.put("count",brdmapper.countSome(id));
+		page.carryOut(map);
+		
+		map.put("beginRow", page.getBeginRow());
+		map.put("endRow", page.getEndRow());
+		map.put("id", id);
+		map.put("list", brdmapper.listSome(map));	
 		map.put("page", page);
 		return map;
 		

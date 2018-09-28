@@ -11,7 +11,7 @@ function headerUI(){
           +'<li><a id="home_btn">Home</a></li>'
           +'<li><a id="logout_btn">Logout</a></li>'
           +'<li><a id="mypage_btn">My Page</a></li>'
-          +'<li><a id="board_btn">Board</a></li>'
+          +'<li><a id="myboard_btn">Board</a></li>'
         +'</ul>'
       +'</nav>	    		'
 	+'</div>'

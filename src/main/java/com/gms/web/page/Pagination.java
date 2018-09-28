@@ -24,8 +24,7 @@ public class Pagination implements Proxy{
 		this.pageNum = (int) p.get("pageNo");
 		this.pageRow = 5;
 		this.blockSize = 5;
-		this.count = (int) p.get("countAll");
-		System.out.println("전체 글 수 : "+this.count);
+		this.count = (int) p.get("count");
 				
 		this.lastPage = (count%pageRow>0)? count/pageRow+1:count/pageRow;
 		this.beginPage = pageNum-((pageNum-1)%blockSize);
@@ -35,8 +34,6 @@ public class Pagination implements Proxy{
 		this.beginRow = (pageRow*pageNum)-(pageRow-1);
 		//this.endRow = (pageNum ==lastPage)? pageRow*pageNum-pageRow+(count%pageRow):pageRow*pageNum;
 		this.endRow = (pageNum ==lastPage)? this.count:pageRow*pageNum;
-		
-		
 		
 		this.prevBlock = beginPage - blockSize;
         this.nextBlock = beginPage + blockSize;

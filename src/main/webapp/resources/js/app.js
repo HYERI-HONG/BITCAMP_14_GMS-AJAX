@@ -107,6 +107,7 @@ app.permission = (()=>{
 							}else if(d.pwValid==='WRONG'){
 								$('#rs').html('비밀번호를 잘못 입력했습니다.');
 							}else{
+								sessionStorage.setItem('myid',d.value.userid);
 								app.router.home({header:'auth'});
 							}
 						},
@@ -174,6 +175,61 @@ app.service={
 				ul.appendTo($('#listContent'));
 			});
 		});
+	},
+	myboards : n=>{
+		$('#content').empty();
+		$.getJSON($.ctx()+'/boards/'+n.id+'/'+n.pageNo,d=>{
+			$.getScript($.script()+'/compo.js',()=>{
+				ui.div({id:'listContent',style:'margin: 160px 60px'}).appendTo($('#content'));
+				let userid=sessionStorage.getItem('myid');
+				let x={
+						type :"defualt",
+						id : "table",
+						head : "게시판",
+						body : "오픈게시판",
+						list : ['번호','제목','내용','글쓴이','작성일','조회수'],
+						clazz : 'table table-bordered'
+				};
+				(ui.table(x)).appendTo($('#listContent'));
+				
+				$.each(d.list,(i,j)=>{
+					let tr = $('<tr/>');
+					$('<td/>').html(j.bno).appendTo(tr);
+					$('<td/>').html(j.title).appendTo(tr);
+					$('<td/>').html(j.content).appendTo(tr);
+					$('<td/>').html(j.writer).appendTo(tr);
+					$('<td/>').html(j.regdate).appendTo(tr);
+					$('<td/>').html(j.viewcnt).appendTo(tr);
+					tr.appendTo($('tbody'));
+				});
+				
+				let ul = $('<ul/>').addClass('pagination justify-content-center');
+				($('<li/>').addClass((d.page.existPrev)? 'page-item':'page-item disabled')
+					.append($('<span/>').addClass('page-link').html('◀').click(e=>{
+						if(d.page.existPrev){
+							app.service.myboards({id:userid,pageNo:d.page.prevBlock});
+						}
+					}))
+				).appendTo(ul);
+				
+				for(let i=d.page.beginPage; i<=d.page.endPage;i++){
+					($('<li/>').attr('style',(i==d.page.pageNum)?'background-color: #35C5F0':'').addClass('page-item')
+							.append($('<span/>').addClass('page-link').html(i).click(e=>{
+								app.service.myboards({id:userid,pageNo:i});
+							}))
+							).appendTo(ul);
+				}
+				($('<li/>').addClass((d.page.existNext)? 'page-item':'page-item disabled')
+						.append($('<span/>').addClass('page-link').html('▶').click(e=>{
+							if(d.page.existNext){
+								app.service.myboards({id:userid,pageNo:d.page.nextBlock});
+							}
+						}))
+						).appendTo(ul);
+				
+				ul.appendTo($('#listContent'));
+			});
+		});
 	}
 };
 app.board =(()=>{
@@ -225,6 +281,14 @@ app.router = {
 								+contentUI()
 								+footerUI()
 						);
+						$('#home_btn').click(e=>{
+							e.preventDefault();
+							if(sessionStorage.getItem('myid')===''){
+								app.router.home({header:'header'});
+							}else{
+								app.router.home({header:'auth'});
+							}
+						});
 						$('#login_btn').click(e=>{
 							e.preventDefault();
 							app.permission.login();
@@ -236,8 +300,12 @@ app.router = {
 						$('#board_btn').click(e=>{
 							app.board.init();
 						});
+						$('#myboard_btn').click(e=>{
+							app.service.myboards({id:sessionStorage.getItem('myid'),pageNo:'1'});
+						});
 						$('#logout_btn').click(e=>{
 							e.preventDefault();
+							sessionStorage.setItem('myid','');
 							app.router.home({header:'header'});
 						});
 						console.log(' when done 로드성공');
