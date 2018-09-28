@@ -11,7 +11,7 @@ import com.gms.web.page.Pagination;
 public interface BoardMapper {
 
 	public List<Board> listAll(Pagination p);
-	public int count();
+	public int countAll();
 	
 	
   public void create(Board vo) throws Exception;

@@ -2,7 +2,7 @@ package com.gms.web.brd;
 
 
 import java.util.List;
-
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +20,17 @@ public class BoardCtrl {
 	@Autowired BoardMapper brdmapper;
 	@Autowired Board brd;
 	@Autowired Pagination page;
+	@Autowired Map<String, Object> map;
 	@RequestMapping("/boards/{pageNo}")
-	public @ResponseBody List<Board> list(@PathVariable String pageNo) throws Exception{
+	public @ResponseBody Map<String,Object> list(@PathVariable String pageNo){
 		logger.info("BoardController ::: list(){}");
-		page.carryOut(Integer.parseInt(pageNo));
-		List<Board> ls = brdmapper.listAll(page);
-		return ls;
+		map.clear();
+		map.put("pageNo", Integer.parseInt(pageNo));
+		map.put("countAll",brdmapper.countAll());
+		page.carryOut(map);
+		map.put("list", brdmapper.listAll(page));	
+		map.put("page", page);
+		return map;
 		
 	}
 }

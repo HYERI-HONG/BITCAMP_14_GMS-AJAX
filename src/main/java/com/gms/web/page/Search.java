@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Search {
 	public void test() {
-		Map<String,Object> param = new HashMap<>();
+		/*Map<String,Object> param = new HashMap<>();
 		String pageNum="";
 		PageProxy pxy = new PageProxy();
 		int pn =(pageNum==null)? 1 :Integer.parseInt(pageNum);
@@ -21,7 +21,7 @@ public class Search {
 		for(int i=0; i<((arr2[3]==null)?3:arr1.length);i++) {
 			param.put(arr1[i], arr2[i]);
 		}
-	/*	request.setAttribute("page",page);
+		request.setAttribute("page",page);
 		request.setAttribute("list",
 				MemberServiceImpl.getInstance()
 				.search(param));	

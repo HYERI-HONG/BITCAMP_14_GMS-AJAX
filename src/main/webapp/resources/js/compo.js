@@ -65,6 +65,9 @@ var ui={
 		tbl.appendTo(outdiv);
 		
 		return tbl;
+	},
+	page : ()=>{
+		return $('<ul/>').addClass('pagination justify-content-center');
 	}
 	
 	

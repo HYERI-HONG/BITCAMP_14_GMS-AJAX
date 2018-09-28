@@ -120,7 +120,62 @@ app.permission = (()=>{
 	};
 	return{login:login};
 })();
-
+app.service={
+	boards : n=>{
+		$('#content').empty();
+		$.getJSON($.ctx()+'/boards/'+n,d=>{
+			$.getScript($.script()+'/compo.js',()=>{
+				ui.div({id:'listContent',style:'margin: 160px 60px'}).appendTo($('#content'));
+				let x={
+						type :"defualt",
+						id : "table",
+						head : "게시판",
+						body : "오픈게시판",
+						list : ['번호','제목','내용','글쓴이','작성일','조회수'],
+						clazz : 'table table-bordered'
+				};
+				(ui.table(x)).appendTo($('#listContent'));
+				
+				$.each(d.list,(i,j)=>{
+					let tr = $('<tr/>');
+					$('<td/>').html(j.bno).appendTo(tr);
+					$('<td/>').html(j.title).appendTo(tr);
+					$('<td/>').html(j.content).appendTo(tr);
+					$('<td/>').html(j.writer).appendTo(tr);
+					$('<td/>').html(j.regdate).appendTo(tr);
+					$('<td/>').html(j.viewcnt).appendTo(tr);
+					tr.appendTo($('tbody'));
+				});
+				
+				let ul = $('<ul/>').addClass('pagination justify-content-center');
+				($('<li/>').addClass((d.page.existPrev)? 'page-item':'page-item disabled')
+					.append($('<span/>').addClass('page-link').html('◀').click(e=>{
+						if(d.page.existPrev){
+							app.service.boards(d.page.prevBlock);
+						}
+					}))
+				).appendTo(ul);
+				
+				for(let i=d.page.beginPage; i<=d.page.endPage;i++){
+					($('<li/>').attr('style',(i==d.page.pageNum)?'background-color: #35C5F0':'').addClass('page-item')
+							.append($('<span/>').addClass('page-link').html(i).click(e=>{
+								app.service.boards(i);
+							}))
+							).appendTo(ul);
+				}
+				($('<li/>').addClass((d.page.existNext)? 'page-item':'page-item disabled')
+						.append($('<span/>').addClass('page-link').html('▶').click(e=>{
+							if(d.page.existNext){
+								app.service.boards(d.page.nextBlock);
+							}
+						}))
+						).appendTo(ul);
+				
+				ul.appendTo($('#listContent'));
+			});
+		});
+	}
+};
 app.board =(()=>{
 	var w, header, footer, content, ctx, script, style, img;
 	var init =()=>{
@@ -136,38 +191,12 @@ app.board =(()=>{
 		setContentView();
 	};
 	var setContentView =()=>{
-		alert('게시판');
-		
 		$('#content').empty();
-		
-		$.getJSON(ctx+'/boards/1',d=>{
-			$.getScript(script+'/compo.js',()=>{
-				ui.div({id:'listContent',style:'margin: 160px 60px'}).appendTo($('#content'));
-				let x={
-						type :"defualt",
-						id : "table",
-						head : "게시판",
-						body : "오픈게시판",
-						list : ['번호','제목','내용','글쓴이','작성일','조회수'],
-						clazz : 'table table-bordered'
-				};
-				(ui.table(x)).appendTo($('#listContent'));
-				$.each(d,(i,j)=>{
-					let tr = $('<tr/>');
-					$('<td/>').html(j.bno).appendTo(tr);
-					$('<td/>').html(j.title).appendTo(tr);
-					$('<td/>').html(j.content).appendTo(tr);
-					$('<td/>').html(j.writer).appendTo(tr);
-					$('<td/>').html(j.regdate).appendTo(tr);
-					$('<td/>').html(j.viewcnt).appendTo(tr);
-					tr.appendTo($('tbody'));
-				});
-			});
-			
-		});
+		app.service.boards('1');
 	};
 	return{init:init}; 
 })();
+
 
 app.router = {
 		init : x=>{
